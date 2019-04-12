@@ -6,12 +6,12 @@
 #include"glut.h"
 #include "Matrix.h"
 #include "Point2D.h"
-using namespace std;
+
 
 static bool bWire = true;
 
 std::vector<Point2D<int>> GraphData;
-
+static Matrix3by3<float> Mat_Composed;
 
 void InitTriangle();
 void RenderAxis();
@@ -20,10 +20,11 @@ void Reshape(int Width, int Height);
 void myKey(unsigned char key, int x, int y);
 void mySpecialKey(int key, int x, int y);
 void myMouse(int button, int state, int x, int y);
-void renderTriangle(vector<Point2D<int>> GraphData);
+void renderTriangle(std::vector<Point2D<int>> GraphData);
 
 int main() {
 
+	Matrix_SetIdentity(Mat_Composed);
 	InitTriangle();
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
 	glutInitWindowSize(800, 600);
@@ -45,7 +46,6 @@ int main() {
 
 void InitTriangle()
 {
-
 	GraphData.push_back(Point2D<int>(20, 20));
 	GraphData.push_back(Point2D<int>(0, 0));
 	GraphData.push_back(Point2D<int>(20, 0));
@@ -63,8 +63,6 @@ void RenderAxis()
 }
 
 
-
-
 void RenderScene()
 {
 
@@ -80,7 +78,7 @@ void RenderScene()
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 	}
-	
+
 	RenderAxis();
 	renderTriangle(GraphData);
 
@@ -128,9 +126,15 @@ void mySpecialKey(int key, int x, int y)
 
 void myMouse(int button, int state, int x, int y)
 {
+	if (state == GLUT_DOWN && button == GLUT_RIGHT_BUTTON)
+	{
+		exit(0);
+	}
+
+	glutPostRedisplay();
 }
 
-void renderTriangle(vector<Point2D<int>> GraphData)
+void renderTriangle(std::vector<Point2D<int>> GraphData)
 {
 	glBegin(GL_TRIANGLES);
 	for (auto iter = GraphData.begin(); iter != GraphData.end(); iter++)
@@ -140,11 +144,5 @@ void renderTriangle(vector<Point2D<int>> GraphData)
 	glEnd();
 }
 
-template<typename T>
-Point2D<T>::Point2D(const T x_, const T y_)
-	:
-	x(x_),
-	y(y_)
-{
-}
+
 
