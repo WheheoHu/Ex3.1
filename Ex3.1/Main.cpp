@@ -14,7 +14,7 @@ template <typename T>
 class Point2D
 {
 public:
-	Point2D(const T x_,const T y_);
+	Point2D(const T x_, const T y_);
 	T getcoorX() {
 		return x;
 	}
@@ -48,7 +48,14 @@ public:
 	{
 		inner.resize(dimx*dimy);
 	}
-
+	int getDim_x()
+	{
+		return dimx;
+	}
+	int getDim_y() 
+	{
+		return dimy;
+	}
 	T& getElem(unsigned int x, unsigned int y);
 	void setElem(unsigned int x, unsigned int y, T Elem);
 
@@ -59,6 +66,9 @@ private:
 
 
 void InitTriangle();
+
+void Matrix_SetIdentity(Matrix3by3<float> maxtrix);
+
 void RenderScene();
 void Reshape(int Width, int Height);
 void myKey(unsigned char key, int x, int y);
@@ -89,10 +99,22 @@ int main() {
 void InitTriangle()
 {
 
-		GraphData.push_back(Point2D<int>(20, 20));
-		GraphData.push_back(Point2D<int>(0, 0));
-		GraphData.push_back(Point2D<int>(20,0));
+	GraphData.push_back(Point2D<int>(20, 20));
+	GraphData.push_back(Point2D<int>(0, 0));
+	GraphData.push_back(Point2D<int>(20, 0));
 }
+
+void Matrix_SetIdentity(Matrix3by3<float> maxtrix)
+{
+	for (unsigned int row = 0; row < maxtrix.getDim_x(); row++)
+	{
+		for (unsigned int col = 0; col < maxtrix.getDim_y(); col++)
+		{
+			maxtrix.setElem(row, col, row == col);
+		}
+	}
+}
+void Matrix_PreMutiply(Matrix3by3<float> maxtri_pre, Matrix3by3<float> matrix);
 
 void RenderScene()
 {
@@ -162,11 +184,23 @@ void myMouse(int button, int state, int x, int y)
 void renderTriangle(vector<Point2D<int>> GraphData)
 {
 	glBegin(GL_TRIANGLES);
-	for (auto iter = GraphData.begin(); iter !=GraphData.end(); iter++)
+	for (auto iter = GraphData.begin(); iter != GraphData.end(); iter++)
 	{
 		glVertex2f(iter->getcoorX(), iter->getcoory());
 	}
 	glEnd();
+}
+
+void Matrix_PreMutiply(Matrix3by3<float> maxtri_pre, Matrix3by3<float> matrix)
+{
+	Matrix3by3<float> temp_matrix;
+	for (int row = 0; row < maxtri_pre.getDim_x(); row++)
+	{
+		for (int col = 0; col < matrix.getDim_y(); col++)
+		{
+		//TODO Mutiply
+		}
+	}
 }
 
 template<typename T>
