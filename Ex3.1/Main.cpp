@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cmath>
+#include <vector>
 
 #include"glut.h"
 
@@ -11,11 +12,12 @@ template <typename T>
 class Point2D
 {
 public:
-	Point2D(const T x_,const T y_,const T z_);
-	~Point2D();
-private:
+	Point2D(const T x_,const T y_);
 
 };
+
+vector<Point2D<int>> PointData_;
+
 
 
 
@@ -110,10 +112,9 @@ void myMouse(int button, int state, int x, int y)
 }
 
 template<typename T>
-Point2D<T>::Point2D(const T x_, const T y_, const T z_)
+Point2D<T>::Point2D(const T x_, const T y_)
 	:
 	x(x_),
-	y(y_),
-	z(z_)
+	y(y_)
 {
 }
