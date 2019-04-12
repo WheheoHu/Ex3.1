@@ -143,13 +143,13 @@ void myKey(unsigned char key, int x, int y)
 		if (brotate)
 		{
 			Mat_Composed = Matrix_SetIdentity(Mat_Composed);
-			Mat_Composed = Rotate2D(Point2D<float>(0,0),PI/2, Mat_Composed);
+			Mat_Composed = Rotate2D(Point2D<float>(0,0),PI/3, Mat_Composed);
 			GraphData = translatePoint2D(Mat_Composed, GraphData);
 		}
 		else
 		{
 			Mat_Composed = Matrix_SetIdentity(Mat_Composed);
-			Mat_Composed = Rotate2D(Point2D<float>(0, 0), -PI/2, Mat_Composed);
+			Mat_Composed = Rotate2D(Point2D<float>(0, 0), -PI/3, Mat_Composed);
 			GraphData = translatePoint2D(Mat_Composed, GraphData);
 		}
 	}
