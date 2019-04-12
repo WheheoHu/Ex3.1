@@ -1,9 +1,10 @@
+#pragma once
 #include <iostream>
 #include <cmath>
 #include <vector>
 
 #include"glut.h"
-
+#include "Matrix.h"
 using namespace std;
 
 static bool bWire = false;
@@ -28,47 +29,8 @@ private:
 
 std::vector<Point2D<int>> GraphData;
 
-template <typename T>
-class Matrix3by3
-{
-public:
-	Matrix3by3()
-		:
-		dimx(3),
-		dimy(3)
-	{
-		inner.resize(dimx*dimy);
-	}
-
-	//forget this
-	Matrix3by3(unsigned int dimx_, unsigned int dimy_)
-		:
-		dimx(dimx_),
-		dimy(dimy_)
-	{
-		inner.resize(dimx*dimy);
-	}
-	int getDim_x()
-	{
-		return dimx;
-	}
-	int getDim_y() 
-	{
-		return dimy;
-	}
-	T& getElem(unsigned int x, unsigned int y);
-	void setElem(unsigned int x, unsigned int y, T Elem);
-
-private:
-	std::vector<T> inner;
-	unsigned int dimx, dimy;
-};
-
 
 void InitTriangle();
-
-void Matrix_SetIdentity(Matrix3by3<float> maxtrix);
-
 void RenderScene();
 void Reshape(int Width, int Height);
 void myKey(unsigned char key, int x, int y);
@@ -77,6 +39,7 @@ void myMouse(int button, int state, int x, int y);
 void renderTriangle(vector<Point2D<int>> GraphData);
 
 int main() {
+
 	InitTriangle();
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
 	glutInitWindowSize(800, 600);
@@ -104,20 +67,12 @@ void InitTriangle()
 	GraphData.push_back(Point2D<int>(20, 0));
 }
 
-void Matrix_SetIdentity(Matrix3by3<float> maxtrix)
-{
-	for (unsigned int row = 0; row < maxtrix.getDim_x(); row++)
-	{
-		for (unsigned int col = 0; col < maxtrix.getDim_y(); col++)
-		{
-			maxtrix.setElem(row, col, row == col);
-		}
-	}
-}
-void Matrix_PreMutiply(Matrix3by3<float> maxtri_pre, Matrix3by3<float> matrix);
+
+
 
 void RenderScene()
 {
+
 	glClear(GL_COLOR_BUFFER_BIT);
 	if (bWire)
 	{
@@ -191,18 +146,6 @@ void renderTriangle(vector<Point2D<int>> GraphData)
 	glEnd();
 }
 
-void Matrix_PreMutiply(Matrix3by3<float> maxtri_pre, Matrix3by3<float> matrix)
-{
-	Matrix3by3<float> temp_matrix;
-	for (int row = 0; row < maxtri_pre.getDim_x(); row++)
-	{
-		for (int col = 0; col < matrix.getDim_y(); col++)
-		{
-		//TODO Mutiply
-		}
-	}
-}
-
 template<typename T>
 Point2D<T>::Point2D(const T x_, const T y_)
 	:
@@ -211,22 +154,3 @@ Point2D<T>::Point2D(const T x_, const T y_)
 {
 }
 
-template<typename T>
-T & Matrix3by3<T>::getElem(unsigned int x, unsigned int y)
-{
-	if (x >= dimx || y >= dimy)
-	{
-		throw std::out_of_range("Matrix out of range");
-	}
-	return inner[dimx*y + x];
-}
-
-template<typename T>
-void Matrix3by3<T>::setElem(unsigned int x, unsigned int y, T Elem)
-{
-	if (x >= dimx || y >= dimy)
-	{
-		throw std::out_of_range("Matrix out of range");
-	}
-	inner[dimx*y + x] = Elem;
-}
