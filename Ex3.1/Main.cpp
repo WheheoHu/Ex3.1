@@ -5,32 +5,16 @@
 
 #include"glut.h"
 #include "Matrix.h"
+#include "Point2D.h"
 using namespace std;
 
-static bool bWire = false;
-
-
-
-template <typename T>
-class Point2D
-{
-public:
-	Point2D(const T x_, const T y_);
-	T getcoorX() {
-		return x;
-	}
-	T getcoory() {
-		return y;
-	}
-private:
-	const T x;
-	const T y;
-};
+static bool bWire = true;
 
 std::vector<Point2D<int>> GraphData;
 
 
 void InitTriangle();
+void RenderAxis();
 void RenderScene();
 void Reshape(int Width, int Height);
 void myKey(unsigned char key, int x, int y);
@@ -67,6 +51,17 @@ void InitTriangle()
 	GraphData.push_back(Point2D<int>(20, 0));
 }
 
+void RenderAxis()
+{
+	glColor3f(0, 0, 0);
+	glBegin(GL_LINES);
+	glVertex2f(0, -100);
+	glVertex2f(0, 100);
+	glVertex2f(100, 0);
+	glVertex2f(-100, 0);
+	glEnd();
+}
+
 
 
 
@@ -85,14 +80,8 @@ void RenderScene()
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 	}
-	glColor3f(0, 0, 0);
-	glBegin(GL_LINES);
-	glVertex2f(0, -100);
-	glVertex2f(0, 100);
-	glVertex2f(100, 0);
-	glVertex2f(-100, 0);
-	glEnd();
-
+	
+	RenderAxis();
 	renderTriangle(GraphData);
 
 	glutSwapBuffers();
@@ -126,6 +115,11 @@ void Reshape(int Width, int Height)
 
 void myKey(unsigned char key, int x, int y)
 {
+	if (key == 'w' || key == 'W')
+	{
+		bWire = !bWire;
+	}
+	glutPostRedisplay();
 }
 
 void mySpecialKey(int key, int x, int y)
