@@ -185,6 +185,7 @@ void myMouse(int button, int state, int x, int y)
 
 void renderTriangle(std::vector<Point2D<float>> GraphData)
 {
+	glColor3f(0.8, 0.4, 0.4);
 	glBegin(GL_TRIANGLES);
 	for (auto iter = GraphData.begin(); iter != GraphData.end(); iter++)
 	{
