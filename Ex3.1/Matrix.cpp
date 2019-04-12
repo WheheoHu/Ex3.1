@@ -30,7 +30,7 @@ Matrix3by3<float> Translate2D(float tx, float ty, Matrix3by3 < float> mat_input)
 
 }
 
-Matrix3by3<float> Scale2D(float sx, float sy, Point2D<int> fixedPt, Matrix3by3 < float> mat_input)
+Matrix3by3<float> Scale2D(float sx, float sy, Point2D<float> fixedPt, Matrix3by3 < float> mat_input)
 {
 	Matrix3by3 <float> mat_scale;
 	mat_scale=Matrix_SetIdentity(mat_scale);
@@ -40,7 +40,7 @@ Matrix3by3<float> Scale2D(float sx, float sy, Point2D<int> fixedPt, Matrix3by3 <
 
 }
 
-Matrix3by3<float> Rotate2D(Point2D<int> fixedPt, float theta, Matrix3by3<float> mat_input)
+Matrix3by3<float> Rotate2D(Point2D<float> fixedPt, float theta, Matrix3by3<float> mat_input)
 {
 
 	Matrix3by3 <float> mat_rotate;
