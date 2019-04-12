@@ -8,10 +8,13 @@
 #include "Point2D.h"
 
 
-static bool bWire = true;
-
+static bool bWire = false;
+static bool btranslate = false;
+static bool brotate = false;
+static bool bscale = false;
+constexpr float PI = 3.1415926f;
 std::vector<Point2D<int>> GraphData;
-static Matrix3by3<float> Mat_Composed;
+ Matrix3by3<float> Mat_Composed;
 
 void InitTriangle();
 void RenderAxis();
@@ -21,10 +24,11 @@ void myKey(unsigned char key, int x, int y);
 void mySpecialKey(int key, int x, int y);
 void myMouse(int button, int state, int x, int y);
 void renderTriangle(std::vector<Point2D<int>> GraphData);
+std::vector<Point2D<int>> translatePoint2D(Matrix3by3<float> matcomposed, std::vector<Point2D<int>> PointData);
 
 int main() {
 
-	Matrix_SetIdentity(Mat_Composed);
+	
 	InitTriangle();
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
 	glutInitWindowSize(800, 600);
@@ -117,6 +121,51 @@ void myKey(unsigned char key, int x, int y)
 	{
 		bWire = !bWire;
 	}
+	if (key == 't' || key == 'T')
+	{
+		btranslate = !btranslate;
+		if (btranslate)
+		{
+			Mat_Composed = Matrix_SetIdentity(Mat_Composed);
+			Mat_Composed = Translate2D(20, 20, Mat_Composed);
+			GraphData = translatePoint2D(Mat_Composed, GraphData);
+		}
+		else
+		{
+			Mat_Composed = Matrix_SetIdentity(Mat_Composed);
+			Mat_Composed = Translate2D(-20, -20, Mat_Composed);
+			GraphData = translatePoint2D(Mat_Composed, GraphData);
+		}
+	}
+	if (key == 'r' || key == 'R')
+	{
+		brotate = !brotate;
+		if (brotate)
+		{
+			Mat_Composed = Matrix_SetIdentity(Mat_Composed);
+			Mat_Composed = Rotate2D(Point2D<int>(0,0),PI/2, Mat_Composed);
+			GraphData = translatePoint2D(Mat_Composed, GraphData);
+		}
+		else
+		{
+			Mat_Composed = Matrix_SetIdentity(Mat_Composed);
+			Mat_Composed = Rotate2D(Point2D<int>(0, 0), -PI/2, Mat_Composed);
+			GraphData = translatePoint2D(Mat_Composed, GraphData);
+		}
+	}
+	if (key == 's')
+	{
+		Mat_Composed = Matrix_SetIdentity(Mat_Composed);
+		Mat_Composed = Scale2D(0.5, 0.5, Point2D<int>(0,0),Mat_Composed);
+		GraphData = translatePoint2D(Mat_Composed, GraphData);
+	}
+
+	if (key == 'S')
+	{
+		Mat_Composed = Matrix_SetIdentity(Mat_Composed);
+		Mat_Composed = Scale2D(2, 2, Point2D<int>(0, 0), Mat_Composed);
+		GraphData = translatePoint2D(Mat_Composed, GraphData);
+	}
 	glutPostRedisplay();
 }
 
@@ -146,3 +195,18 @@ void renderTriangle(std::vector<Point2D<int>> GraphData)
 
 
 
+std::vector<Point2D<int>> translatePoint2D(Matrix3by3<float> matcomposed, std::vector<Point2D<int>> PointData) {
+	std::vector<Point2D<int>> PointData_trans;
+
+	float temp_elem_x = 0, temp_elem_y = 0;
+	for (auto iter = PointData.begin(); iter != PointData.end(); iter++)
+	{
+			
+				temp_elem_x = matcomposed.getElem(0, 0)*iter->getcoorX()+ matcomposed.getElem(0, 1)*iter->getcoory()+ matcomposed.getElem(0, 2);
+				temp_elem_y = matcomposed.getElem(1, 0)*iter->getcoorX() + matcomposed.getElem(1, 1)*iter->getcoory() + matcomposed.getElem(1, 2);
+			PointData_trans.push_back(Point2D<int>(temp_elem_x, temp_elem_y));
+			temp_elem_x = 0;
+			temp_elem_y = 0;
+	}
+	return PointData_trans;
+}

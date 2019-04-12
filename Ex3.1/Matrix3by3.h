@@ -31,7 +31,7 @@ public:
 	void setElem(unsigned int x, unsigned int y, T Elem);
 
 private:
-	std::vector<T> inner;
+	 std::vector<T> inner;
 	unsigned int dimx, dimy;
 };
 
