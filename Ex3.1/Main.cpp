@@ -8,27 +8,38 @@ using namespace std;
 
 static bool bWire = false;
 
+
+
 template <typename T>
 class Point2D
 {
 public:
 	Point2D(const T x_,const T y_);
-
+	T getcoorX() {
+		return x;
+	}
+	T getcoory() {
+		return y;
+	}
+private:
+	const T x;
+	const T y;
 };
 
-vector<Point2D<int>> PointData_;
+std::vector<Point2D<int>> GraphData;
 
 
 
-
+void InitTriangle();
 void RenderScene();
 void Reshape(int Width, int Height);
 void myKey(unsigned char key, int x, int y);
 void mySpecialKey(int key, int x, int y);
 void myMouse(int button, int state, int x, int y);
+void renderTriangle(vector<Point2D<int>> GraphData);
 
 int main() {
-
+	InitTriangle();
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
 	glutInitWindowSize(800, 600);
 	glutCreateWindow("GLRect");
@@ -45,6 +56,14 @@ int main() {
 	glutMainLoop();
 
 	return 0;
+}
+
+void InitTriangle()
+{
+
+		GraphData.push_back(Point2D<int>(20, 20));
+		GraphData.push_back(Point2D<int>(0, 0));
+		GraphData.push_back(Point2D<int>(20,0));
 }
 
 void RenderScene()
@@ -69,6 +88,7 @@ void RenderScene()
 	glVertex2f(-100, 0);
 	glEnd();
 
+	renderTriangle(GraphData);
 
 	glutSwapBuffers();
 }
@@ -111,6 +131,16 @@ void myMouse(int button, int state, int x, int y)
 {
 }
 
+void renderTriangle(vector<Point2D<int>> GraphData)
+{
+	glBegin(GL_TRIANGLES);
+	for (auto iter = GraphData.begin(); iter !=GraphData.end(); iter++)
+	{
+		glVertex2f(iter->getcoorX(), iter->getcoory());
+	}
+	glEnd();
+}
+
 template<typename T>
 Point2D<T>::Point2D(const T x_, const T y_)
 	:
@@ -118,3 +148,4 @@ Point2D<T>::Point2D(const T x_, const T y_)
 	y(y_)
 {
 }
+
