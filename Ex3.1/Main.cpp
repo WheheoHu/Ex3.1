@@ -49,14 +49,8 @@ public:
 		inner.resize(dimx*dimy);
 	}
 
-	T& getElem(unsigned int x, unsigned int y) {
-		if (x>=dimx||y>=dimy)
-		{
-			throw std::out_of_range("Matrix out of range");
-		}
-		return inner[dimx*y + x];
-	}
-
+	T& getElem(unsigned int x, unsigned int y);
+	void setElem(unsigned int x, unsigned int y, T Elem);
 
 private:
 	std::vector<T> inner;
@@ -183,3 +177,22 @@ Point2D<T>::Point2D(const T x_, const T y_)
 {
 }
 
+template<typename T>
+T & Matrix3by3<T>::getElem(unsigned int x, unsigned int y)
+{
+	if (x >= dimx || y >= dimy)
+	{
+		throw std::out_of_range("Matrix out of range");
+	}
+	return inner[dimx*y + x];
+}
+
+template<typename T>
+void Matrix3by3<T>::setElem(unsigned int x, unsigned int y, T Elem)
+{
+	if (x >= dimx || y >= dimy)
+	{
+		throw std::out_of_range("Matrix out of range");
+	}
+	inner[dimx*y + x] = Elem;
+}
